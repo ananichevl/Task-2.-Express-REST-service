@@ -23,4 +23,21 @@ const deleteBoardById = async id => {
   return (await Board.deleteOne({ _id: id })).deletedCount;
 };
 
-module.exports = { getAll, addBoard, getById, deleteBoardById, update };
+const addColumn = async ({ id, newColumn }) => {
+  const board = await getById(id);
+  const updatedBoard = await Board.findByIdAndUpdate(
+    { _id: id },
+    { title: board.title, columns: [...board.columns, newColumn] },
+    { new: true }
+  );
+  return updatedBoard.columns.find(c => c.title === newColumn.title).id;
+};
+
+module.exports = {
+  getAll,
+  addBoard,
+  getById,
+  deleteBoardById,
+  update,
+  addColumn
+};

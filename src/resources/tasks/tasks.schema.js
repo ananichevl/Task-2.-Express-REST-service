@@ -6,10 +6,8 @@ const task = Joi.object({
     .integer()
     .min(0)
     .required(),
-  description: Joi.string().required(),
-  userId: Joi.string()
-    .allow(null)
-    .required(),
+  description: Joi.string().allow(null),
+  userId: Joi.string().allow(null),
   boardId: Joi.string()
     .allow(null)
     .required(),

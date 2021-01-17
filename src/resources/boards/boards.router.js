@@ -95,4 +95,23 @@ router.route('/:id').delete(
   })
 );
 
+router.route('/:id/column').put(
+  handler(async (req, res, next) => {
+    const { id } = req.params;
+    const { columnTitle } = req.body;
+    const columnId = await boardsService.addColumn(id, columnTitle);
+    res.json({ id: columnId });
+    next(
+      createSuccessObj({
+        statusCode: 200,
+        url: '/boards/:id/column',
+        type: 'put',
+        queryParams: req.params,
+        body: req.body,
+        result: { id: columnId }
+      })
+    );
+  })
+);
+
 module.exports = router;

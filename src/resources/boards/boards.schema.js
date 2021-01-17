@@ -1,10 +1,12 @@
 const Joi = require('joi');
 
 const newBoard = Joi.object({
-  title: Joi.string().required(),
-  columns: Joi.array()
-    .items(Joi.object())
-    .required()
+  title: Joi.string().required()
 });
 
-module.exports = { newBoard };
+const addColumnScheme = Joi.object({
+  id: Joi.string().required(),
+  columnTitle: Joi.string().required()
+});
+
+module.exports = { newBoard, addColumnScheme };

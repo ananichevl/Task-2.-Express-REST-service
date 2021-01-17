@@ -2,17 +2,14 @@ const boom = require('boom');
 const boardsRepo = require('./board.db.repository');
 const Board = require('./boards.model');
 const Column = require('./columns.model');
-const { newBoard } = require('./boards.schema');
+const { newBoard, addColumnScheme } = require('./boards.schema');
 
 const getAll = async () => await boardsRepo.getAll();
 
-const createBoard = (title, columns) => {
-  const { error } = newBoard.validate({ title, columns });
+const createBoard = title => {
+  const { error } = newBoard.validate({ title });
   if (error) throw boom.badRequest(error.message, { request: 'createBoard' });
-  const columnsInBoard = columns.map(
-    ({ title: titleColumn, order }) => new Column({ title: titleColumn, order })
-  );
-  const board = new Board({ title, columns: columnsInBoard });
+  const board = new Board({ title });
   return boardsRepo.addBoard(board);
 };
 
@@ -45,4 +42,18 @@ const updateBoard = async (id, title, columns) => {
   return await boardsRepo.update({ id, title, newColumns });
 };
 
-module.exports = { getAll, createBoard, getById, updateBoard, deleteBoardById };
+const addColumn = async (id, columnTitle) => {
+  const { error } = addColumnScheme.validate({ id, columnTitle });
+  if (error) throw boom.badRequest(error.message, { request: 'updateBoard' });
+  const newColumn = new Column({ title: columnTitle });
+  return await boardsRepo.addColumn({ id, newColumn });
+};
+
+module.exports = {
+  getAll,
+  createBoard,
+  getById,
+  updateBoard,
+  deleteBoardById,
+  addColumn
+};
