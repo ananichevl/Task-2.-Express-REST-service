@@ -4,6 +4,7 @@ const path = require('path');
 const YAML = require('yamljs');
 const userRouter = require('./resources/users/user.router');
 const boardsRouter = require('./resources/boards/boards.router');
+const boardsv2Router = require('./resources/boardsv2/boardsv2.router');
 const logger = require('./utils/logger');
 const cors = require('cors');
 
@@ -26,6 +27,7 @@ app.use('/', (req, res, next) => {
 
 app.use('/users', userRouter);
 app.use('/boards', boardsRouter);
+app.use('/boardsv2', boardsv2Router);
 
 app.use((obj, req, res, next) => {
   if (obj.isSuccess) {

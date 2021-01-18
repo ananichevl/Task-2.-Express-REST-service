@@ -5,6 +5,7 @@ const createSuccessObj = require('../../utils/success');
 const Board = require('./boards.model');
 
 router.use('/', require('../tasks/tasks.router'));
+router.use('/', require('../columns/columns.router'));
 
 router.route('/').get(
   handler(async (req, res, next) => {
@@ -45,7 +46,8 @@ router.route('/:id').get(
   handler(async (req, res, next) => {
     const { id } = req.params;
     const board = await boardsService.getById(id);
-    res.json(Board.toResponse(board));
+    console.log(board.columns[0].tasks);
+    res.json(board);
     next(
       createSuccessObj({
         statusCode: 200,

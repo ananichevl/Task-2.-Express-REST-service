@@ -1,4 +1,5 @@
 const Board = require('./boards.model');
+const Boardv2 = require('../boardsv2/boardsv2.model');
 const Task = require('../tasks/tasks.model');
 
 const getAll = async () => {
@@ -7,11 +8,21 @@ const getAll = async () => {
 
 const addBoard = async board => {
   await board.save();
+  const titlev2 = board.title;
+  const boarv2 = new Boardv2({ titlev2 });
+  await boarv2.save();
   return board;
 };
 
 const getById = async id => {
-  return Board.findOne({ _id: id });
+  return Boardv2.findOne({ _id: id }).populate({
+    path: 'columns',
+    select: 'title',
+    populate: {
+      path: 'tasks',
+      select: 'title'
+    }
+  });
 };
 
 const update = async ({ title, newColumns, id }) => {

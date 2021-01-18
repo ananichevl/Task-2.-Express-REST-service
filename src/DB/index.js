@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 
 const { MONGO_CONNECTION_STRING } = require('../common/config');
 
+mongoose.set('toJSON', { virtuals: true });
+
 mongoose.connect(MONGO_CONNECTION_STRING, {
   useNewUrlParser: true,
   useUnifiedTopology: true
