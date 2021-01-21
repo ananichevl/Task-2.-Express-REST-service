@@ -56,4 +56,22 @@ router.route('/:id').get(
   })
 );
 
+router.route('/:id').delete(
+  handler(async (req, res, next) => {
+    const { id } = req.params;
+    const result = await boardsService.removeById(id);
+    res.json(result);
+    next(
+      createSuccessObj({
+        statusCode: 200,
+        url: '/boardsv2/:id',
+        type: 'get',
+        queryParams: req.params,
+        body: req.body,
+        result
+      })
+    );
+  })
+);
+
 module.exports = router;

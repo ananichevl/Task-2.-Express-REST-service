@@ -15,13 +15,18 @@ const getById = async id => {
     select: 'title',
     populate: {
       path: 'tasks',
-      select: 'title'
+      select: 'title description'
     }
   });
+};
+
+const removeById = async id => {
+  return Boardv2.remove({ _id: id });
 };
 
 module.exports = {
   getAll,
   addBoard,
-  getById
+  getById,
+  removeById
 };

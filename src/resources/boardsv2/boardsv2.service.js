@@ -22,8 +22,19 @@ const getById = async id => {
   return board;
 };
 
+const removeById = async id => {
+  const board = await boardsv2Repo.removeById(id);
+  if (!board) {
+    throw boom.notFound("This board doesn't exist", {
+      request: 'removeById'
+    });
+  }
+  return board;
+};
+
 module.exports = {
   getAll,
   createBoard,
-  getById
+  getById,
+  removeById
 };

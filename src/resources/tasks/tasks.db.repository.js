@@ -16,9 +16,10 @@ const update = async ({
   columnId,
   taskId
 }) =>
-  Task.updateOne(
+  Task.findOneAndUpdate(
     { _id: taskId },
-    { title, order, description, userId, boardId, columnId, _id: taskId }
+    { title, order, description, userId, boardId, columnId, _id: taskId },
+    { new: true }
   );
 
 const deleteTask = async ({ taskId }) => {

@@ -1,5 +1,6 @@
 const uuid = require('uuid');
 const mongoose = require('mongoose');
+const Task = require('../tasks/tasks.model');
 
 const columnSchema = new mongoose.Schema({
   title: String,
@@ -19,6 +20,11 @@ columnSchema.virtual('tasks', {
   localField: '_id',
   foreignField: 'columnId',
   justOne: false
+});
+
+columnSchema.pre('remove', { query: true, document: false }, function (next) {
+  Task.remove({ columnId: this._conditions._id }).exec();
+  next();
 });
 
 columnSchema.statics.toResponse = obj => {
