@@ -5,11 +5,6 @@ const taskSchema = new mongoose.Schema({
   title: String,
   order: Number,
   description: String,
-  boardId: {
-    type: String,
-    default: '',
-    get: v => (v ? v : null)
-  },
   columnId: {
     type: String,
     default: '',
@@ -27,8 +22,8 @@ const taskSchema = new mongoose.Schema({
 });
 
 taskSchema.statics.toResponse = obj => {
-  const { id, title, order, description, userId, boardId, columnId } = obj;
-  return { id, title, order, description, userId, boardId, columnId };
+  const { id, title, order, description, userId, columnId } = obj;
+  return { id, title, order, description, userId, columnId };
 };
 
 const Task = mongoose.model('Task', taskSchema);

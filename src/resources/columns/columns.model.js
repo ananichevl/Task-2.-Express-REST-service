@@ -4,6 +4,7 @@ const Task = require('../tasks/tasks.model');
 
 const columnSchema = new mongoose.Schema({
   title: String,
+  order: Number,
   _id: {
     type: String,
     default: uuid

@@ -1,6 +1,6 @@
 const Task = require('./tasks.model');
 
-const getTasksByBoardId = async boardId => Task.find({ boardId });
+const getTasksByColumnId = async columnId => Task.find({ columnId }, null, { sort: { order: 1 } });
 
 const addTask = async task => {
   await task.save();
@@ -8,25 +8,41 @@ const addTask = async task => {
 };
 
 const update = async ({
+  id,
   title,
   order,
   description,
   userId,
-  boardId,
-  columnId,
-  taskId
-}) =>
-  Task.findOneAndUpdate(
-    { _id: taskId },
-    { title, order, description, userId, boardId, columnId, _id: taskId },
-    { new: true }
+  columnId
+}) => {
+  let updatedFields = {};
+  if (title) {
+    updatedFields = { ...updatedFields, title };
+  }
+  if (order) {
+    updatedFields = { ...updatedFields, order };
+  }
+  if (description) {
+    updatedFields = { ...updatedFields, description };
+  }
+  if (userId) {
+    updatedFields = { ...updatedFields, userId };
+  }
+  if (columnId) {
+    updatedFields = { ...updatedFields, columnId };
+  }
+  return Task.findOneAndUpdate(
+      { _id: id },
+      { ...updatedFields },
+      { new: true }
   );
+};
 
 const deleteTask = async ({ taskId }) => {
   return (await Task.deleteOne({ _id: taskId })).deletedCount;
 };
 
-const findTask = async ({ taskId, boardId }) =>
-  Task.findOne({ _id: taskId, boardId });
+const findTask = async ({ id }) =>
+  Task.findOne({ _id: id });
 
-module.exports = { getTasksByBoardId, deleteTask, addTask, findTask, update };
+module.exports = { getTasksByColumnId, deleteTask, addTask, findTask, update };

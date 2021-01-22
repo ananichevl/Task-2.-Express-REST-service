@@ -3,23 +3,78 @@ const columnService = require('./columns.service');
 const handler = require('../../utils/handler');
 const createSuccessObj = require('../../utils/success');
 
-router.route('/:boardId/column-v2').post(
+router.route('/:boardId/columns').post(
   handler(async (req, res, next) => {
     const { boardId } = req.params;
-    const { title } = req.body;
-    const column = await columnService.createColumn(title, boardId);
-    res.json({ id: column._id });
+    const { title, order } = req.body;
+    const column = await columnService.createColumn(title, order, boardId);
+    res.json(column);
     next(
       createSuccessObj({
         statusCode: 200,
-        url: '/:boardId/column-v2',
+        url: '/:boardId/columns',
         type: 'post',
         queryParams: req.params,
         body: req.body,
-        result: { id: column._id }
+        result: { column }
       })
     );
   })
+);
+
+router.route('/:boardId/columns/:columnId').get(
+    handler(async (req, res, next) => {
+        const { columnId } = req.params;
+        const column = await columnService.getColumnById(columnId);
+        res.json(column);
+        next(
+            createSuccessObj({
+                statusCode: 200,
+                url: '/:boardId/columns/:columnId',
+                type: 'get',
+                queryParams: req.params,
+                body: req.body,
+                result: { column }
+            })
+        );
+    })
+);
+
+router.route('/:boardId/columns/:columnId').put(
+    handler(async (req, res, next) => {
+        const { boardId, columnId } = req.params;
+        const { title, order } = req.body;
+        const column = await columnService.updateColumn(boardId, columnId, title, order);
+        res.json(column);
+        next(
+            createSuccessObj({
+                statusCode: 200,
+                url: '/:boardId/columns/:columnId',
+                type: 'put',
+                queryParams: req.params,
+                body: req.body,
+                result: { column }
+            })
+        );
+    })
+);
+
+router.route('/:boardId/columns/:columnId').delete(
+    handler(async (req, res, next) => {
+        const { boardId, columnId } = req.params;
+        const column = await columnService.deleteColumn(boardId, columnId);
+        res.status(204).end();
+        next(
+            createSuccessObj({
+                statusCode: 200,
+                url: '/:boardId/columns/:columnId',
+                type: 'delete',
+                queryParams: req.params,
+                body: req.body,
+                result: { column }
+            })
+        );
+    })
 );
 
 module.exports = router;

@@ -4,15 +4,15 @@ const handler = require('../../utils/handler');
 const createSuccessObj = require('../../utils/success');
 const Task = require('./tasks.model');
 
-router.route('/:boardId/tasks').get(
+router.route('/:boardId/columns/:columnId/tasks').get(
   handler(async (req, res, next) => {
-    const { boardId } = req.params;
-    const tasks = await tasksService.getTasksByBoardId(boardId);
+    const { columnId } = req.params;
+    const tasks = await tasksService.getTasksByBoardId(columnId);
     res.json(tasks.map(task => Task.toResponse(task)));
     next(
       createSuccessObj({
         statusCode: 200,
-        url: '/:boardId/tasks',
+        url: '/:boardId/columns/:columnId/tasks',
         type: 'get',
         queryParams: req.params,
         body: req.body,
@@ -22,23 +22,20 @@ router.route('/:boardId/tasks').get(
   })
 );
 
-router.route('/:boardId/tasks').post(
+router.route('/:boardId/columns/:columnId/tasks').post(
   handler(async (req, res, next) => {
-    const { boardId } = req.params;
+    const { columnId } = req.params;
     const {
       title,
       order,
       description,
-      userId,
-      boardId: boardIdInBody,
-      columnId
+      userId
     } = req.body;
     const task = await tasksService.addTask({
       title,
       order,
       description,
       userId,
-      boardId: boardIdInBody || boardId,
       columnId
     });
     res.json(Task.toResponse(task));
@@ -46,7 +43,7 @@ router.route('/:boardId/tasks').post(
       createSuccessObj({
         statusCode: 200,
         type: 'post',
-        url: '/:boardId/tasks',
+        url: '/:boardId/columns/:columnId/tasks',
         queryParams: req.params,
         body: req.body,
         result: Task.toResponse(task)
@@ -55,16 +52,16 @@ router.route('/:boardId/tasks').post(
   })
 );
 
-router.route('/:boardId/tasks/:taskId').get(
+router.route('/:boardId/columns/:columnId/tasks/:taskId').get(
   handler(async (req, res, next) => {
-    const { boardId, taskId } = req.params;
-    const task = await tasksService.findTask({ taskId, boardId });
+    const { taskId } = req.params;
+    const task = await tasksService.findTask({ taskId });
     res.json(Task.toResponse(task));
     next(
       createSuccessObj({
         statusCode: 200,
         type: 'get',
-        url: '/:boardId/tasks/:taskId',
+        url: '/:boardId/columns/:columnId/tasks/:taskId',
         queryParams: req.params,
         body: req.body,
         result: Task.toResponse(task)
@@ -73,32 +70,31 @@ router.route('/:boardId/tasks/:taskId').get(
   })
 );
 
-router.route('/:boardId/tasks/:taskId').put(
+router.route('/:boardId/columns/:columnId/tasks/:taskId').put(
   handler(async (req, res, next) => {
-    const { boardId, taskId } = req.params;
+    const { taskId, columnId } = req.params;
     const {
       title,
       order,
       description,
       userId,
-      boardId: boardIdInBody,
-      columnId
+      newColumnId
     } = req.body;
     const updatedTask = await tasksService.updateById({
+      id: taskId,
+      columnId,
       title,
       order,
       description,
       userId,
-      boardId: boardIdInBody || boardId,
-      columnId,
-      taskId
+      newColumnId
     });
     res.json(Task.toResponse(updatedTask));
     next(
       createSuccessObj({
         statusCode: 200,
         type: 'put',
-        url: '/:boardId/tasks/:taskId',
+        url: '/:boardId/columns/:columnId/tasks/:taskId',
         queryParams: req.params,
         body: req.body,
         result: Task.toResponse(updatedTask)
@@ -107,16 +103,16 @@ router.route('/:boardId/tasks/:taskId').put(
   })
 );
 
-router.route('/:boardId/tasks/:taskId').delete(
+router.route('/:boardId/columns/:columnId/tasks/:taskId').delete(
   handler(async (req, res, next) => {
-    const { boardId, taskId } = req.params;
-    await tasksService.deleteTask({ taskId, boardId });
+    const { taskId, columnId } = req.params;
+    await tasksService.deleteTask({ taskId, columnId });
     res.status(204).end();
     next(
       createSuccessObj({
         statusCode: 204,
         type: 'delete',
-        url: '/:boardId/tasks/:taskId',
+        url: '/:boardId/columns/:columnId/tasks/:taskId',
         queryParams: req.params,
         body: req.body
       })

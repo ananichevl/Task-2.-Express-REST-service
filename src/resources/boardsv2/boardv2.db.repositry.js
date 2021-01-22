@@ -12,10 +12,12 @@ const addBoard = async board => {
 const getById = async id => {
   return Boardv2.findOne({ _id: id }).populate({
     path: 'columns',
-    select: 'title',
+    select: 'title order',
+    options: { sort: { order: 1 } },
     populate: {
       path: 'tasks',
-      select: 'title description'
+      select: 'title description order',
+      options: { sort: { order: 1 } }
     }
   });
 };

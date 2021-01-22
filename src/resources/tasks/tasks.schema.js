@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-const task = Joi.object({
+const taskCreate = Joi.object({
   title: Joi.string().required(),
   order: Joi.number()
     .integer()
@@ -8,10 +8,20 @@ const task = Joi.object({
     .required(),
   description: Joi.string().allow(null),
   userId: Joi.string().allow(null),
-  boardId: Joi.string()
-    .allow(null)
-    .required(),
   columnId: Joi.string().allow(null)
 });
 
-module.exports = task;
+const taskUpdate = Joi.object({
+  id: Joi.string().required(),
+  title: Joi.string().allow(null),
+  order: Joi.number()
+      .integer()
+      .min(0)
+      .allow(null),
+  description: Joi.string().allow(null),
+  userId: Joi.string().allow(null),
+  columnId: Joi.string().allow(null),
+  newColumnId: Joi.string().allow(null)
+});
+
+module.exports = { taskCreate, taskUpdate };
