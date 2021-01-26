@@ -2,8 +2,10 @@ const router = require('express').Router();
 const columnService = require('./columns.service');
 const handler = require('../../utils/handler');
 const createSuccessObj = require('../../utils/success');
+const authHandler = require('../../utils/authHandler');
 
 router.route('/:boardId/columns').post(
+    authHandler,
   handler(async (req, res, next) => {
     const { boardId } = req.params;
     const { title, order } = req.body;
@@ -23,6 +25,7 @@ router.route('/:boardId/columns').post(
 );
 
 router.route('/:boardId/columns/:columnId').get(
+    authHandler,
     handler(async (req, res, next) => {
         const { columnId } = req.params;
         const column = await columnService.getColumnById(columnId);
@@ -41,6 +44,7 @@ router.route('/:boardId/columns/:columnId').get(
 );
 
 router.route('/:boardId/columns/:columnId').put(
+    authHandler,
     handler(async (req, res, next) => {
         const { boardId, columnId } = req.params;
         const { title, order } = req.body;
@@ -60,6 +64,7 @@ router.route('/:boardId/columns/:columnId').put(
 );
 
 router.route('/:boardId/columns/:columnId').delete(
+    authHandler,
     handler(async (req, res, next) => {
         const { boardId, columnId } = req.params;
         const column = await columnService.deleteColumn(boardId, columnId);

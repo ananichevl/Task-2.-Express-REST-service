@@ -2,8 +2,10 @@ const router = require('express').Router();
 const boardsService = require('./boardsv2.service');
 const handler = require('../../utils/handler');
 const createSuccessObj = require('../../utils/success');
+const authHandler = require('../../utils/authHandler');
 
 router.route('/').get(
+    authHandler,
   handler(async (req, res, next) => {
     const boards = await boardsService.getAll();
     res.json(boards);
@@ -21,6 +23,7 @@ router.route('/').get(
 );
 
 router.route('/').post(
+    authHandler,
   handler(async (req, res, next) => {
     const { title, columns } = req.body;
     const board = await boardsService.createBoard(title, columns);
@@ -39,6 +42,7 @@ router.route('/').post(
 );
 
 router.route('/:id').get(
+    authHandler,
   handler(async (req, res, next) => {
     const { id } = req.params;
     const board = await boardsService.getById(id);
@@ -57,6 +61,7 @@ router.route('/:id').get(
 );
 
 router.route('/:id').delete(
+    authHandler,
   handler(async (req, res, next) => {
     const { id } = req.params;
     const result = await boardsService.removeById(id);

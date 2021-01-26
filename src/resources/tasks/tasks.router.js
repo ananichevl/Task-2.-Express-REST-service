@@ -3,8 +3,10 @@ const tasksService = require('./tasks.service');
 const handler = require('../../utils/handler');
 const createSuccessObj = require('../../utils/success');
 const Task = require('./tasks.model');
+const authHandler = require('../../utils/authHandler');
 
 router.route('/:boardId/columns/:columnId/tasks').get(
+    authHandler,
   handler(async (req, res, next) => {
     const { columnId } = req.params;
     const tasks = await tasksService.getTasksByBoardId(columnId);
@@ -23,6 +25,7 @@ router.route('/:boardId/columns/:columnId/tasks').get(
 );
 
 router.route('/:boardId/columns/:columnId/tasks').post(
+    authHandler,
   handler(async (req, res, next) => {
     const { columnId } = req.params;
     const {
@@ -53,6 +56,7 @@ router.route('/:boardId/columns/:columnId/tasks').post(
 );
 
 router.route('/:boardId/columns/:columnId/tasks/:taskId').get(
+    authHandler,
   handler(async (req, res, next) => {
     const { taskId } = req.params;
     const task = await tasksService.findTask({ taskId });
@@ -71,6 +75,7 @@ router.route('/:boardId/columns/:columnId/tasks/:taskId').get(
 );
 
 router.route('/:boardId/columns/:columnId/tasks/:taskId').put(
+    authHandler,
   handler(async (req, res, next) => {
     const { taskId, columnId } = req.params;
     const {
@@ -104,6 +109,7 @@ router.route('/:boardId/columns/:columnId/tasks/:taskId').put(
 );
 
 router.route('/:boardId/columns/:columnId/tasks/:taskId').delete(
+    authHandler,
   handler(async (req, res, next) => {
     const { taskId, columnId } = req.params;
     await tasksService.deleteTask({ taskId, columnId });
