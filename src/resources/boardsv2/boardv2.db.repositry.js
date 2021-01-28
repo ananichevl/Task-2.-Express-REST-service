@@ -26,9 +26,17 @@ const removeById = async id => {
   return Boardv2.remove({ _id: id });
 };
 
+const update = async (id, title) => {
+  return Boardv2.findOneAndUpdate(
+      { _id: id },
+      { title },
+      { new: true });
+};
+
 module.exports = {
   getAll,
   addBoard,
   getById,
-  removeById
+  removeById,
+  update
 };

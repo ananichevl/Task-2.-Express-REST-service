@@ -1,7 +1,7 @@
 const boom = require('boom');
 const boardsv2Repo = require('./boardv2.db.repositry');
 const Boardv2 = require('./boardsv2.model');
-const { newBoard } = require('./boardsv2.schema');
+const { newBoard, updateBoard } = require('./boardsv2.schema');
 
 const getAll = async () => await boardsv2Repo.getAll();
 
@@ -32,9 +32,17 @@ const removeById = async id => {
   return board;
 };
 
+const updateBoardById = async (id, title) => {
+  const { error } = updateBoard.validate({ title });
+  if (error) throw boom.badRequest(error.message, { request: 'updateBoard' });
+
+  return boardsv2Repo.update(id, title);
+};
+
 module.exports = {
   getAll,
   createBoard,
   getById,
-  removeById
+  removeById,
+  updateBoardById
 };

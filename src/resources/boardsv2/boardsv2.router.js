@@ -41,6 +41,26 @@ router.route('/').post(
   })
 );
 
+router.route('/:id').put(
+    authHandler,
+    handler(async (req, res, next) => {
+        const { id } = req.params;
+        const { title } = req.body;
+        const board = await boardsService.updateBoardById(id, title);
+        res.json(board);
+        next(
+            createSuccessObj({
+                statusCode: 200,
+                url: '/boardsv2/',
+                type: 'put',
+                queryParams: req.params,
+                body: req.body,
+                result: board
+            })
+        );
+    })
+);
+
 router.route('/:id').get(
     authHandler,
   handler(async (req, res, next) => {

@@ -4,4 +4,8 @@ const newBoard = Joi.object({
   title: Joi.string().required()
 });
 
-module.exports = { newBoard };
+const updateBoard = Joi.object({
+  title: Joi.string().allow(null)
+});
+
+module.exports = { newBoard, updateBoard };
