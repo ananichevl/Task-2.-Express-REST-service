@@ -7,7 +7,8 @@ const authHandler = require('../../utils/authHandler');
 router.route('/').get(
     authHandler,
   handler(async (req, res, next) => {
-    const boards = await boardsService.getAll();
+      const { id: userId } = req.user;
+    const boards = await boardsService.getAll(userId);
     res.json(boards);
     next(
       createSuccessObj({
@@ -25,8 +26,9 @@ router.route('/').get(
 router.route('/').post(
     authHandler,
   handler(async (req, res, next) => {
-    const { title, columns } = req.body;
-    const board = await boardsService.createBoard(title, columns);
+      const { id: userId } = req.user;
+    const { title } = req.body;
+    const board = await boardsService.createBoard(title, userId);
     res.json(board);
     next(
       createSuccessObj({

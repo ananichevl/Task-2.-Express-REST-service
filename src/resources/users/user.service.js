@@ -27,7 +27,7 @@ const loginUser = async (login, password) => {
   } else {
     const correctPassword = await argon2.verify(user.password, password);
     if (!correctPassword) {
-      throw boom.unauthorized(error.message, { request: 'loginUser' });
+      throw boom.unauthorized('Incorrect user or password', { request: 'loginUser' });
     }
   }
   const token = generateToken(user);

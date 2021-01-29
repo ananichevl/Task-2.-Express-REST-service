@@ -3,12 +3,12 @@ const boardsv2Repo = require('./boardv2.db.repositry');
 const Boardv2 = require('./boardsv2.model');
 const { newBoard, updateBoard } = require('./boardsv2.schema');
 
-const getAll = async () => await boardsv2Repo.getAll();
+const getAll = async (userId) => await boardsv2Repo.getAll(userId);
 
-const createBoard = title => {
+const createBoard = (title, userId) => {
   const { error } = newBoard.validate({ title });
   if (error) throw boom.badRequest(error.message, { request: 'createBoard' });
-  const board = new Boardv2({ title });
+  const board = new Boardv2({ title, userId });
   return boardsv2Repo.addBoard(board);
 };
 

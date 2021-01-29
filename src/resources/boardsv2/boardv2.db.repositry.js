@@ -1,7 +1,7 @@
 const Boardv2 = require('./boardsv2.model');
 
-const getAll = async () => {
-  return Boardv2.find({});
+const getAll = async (userId) => {
+  return Boardv2.find({ userId });
 };
 
 const addBoard = async board => {

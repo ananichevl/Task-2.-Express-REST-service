@@ -8,6 +8,11 @@ const boardSchema = new mongoose.Schema({
   _id: {
     type: String,
     default: uuid
+  },
+  userId: {
+    type: String,
+    default: '',
+    get: v => (v ? v : null)
   }
 });
 
