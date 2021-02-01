@@ -5,7 +5,8 @@ const newBoard = Joi.object({
 });
 
 const updateBoard = Joi.object({
-  title: Joi.string().allow(null)
+  title: Joi.string().allow(null),
+  background: Joi.string().allow(null)
 });
 
 module.exports = { newBoard, updateBoard };

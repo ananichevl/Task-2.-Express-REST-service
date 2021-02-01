@@ -26,10 +26,17 @@ const removeById = async id => {
   return Boardv2.remove({ _id: id });
 };
 
-const update = async (id, title) => {
+const update = async (id, title, background) => {
+  let updatedFields = {};
+  if (title) {
+    updatedFields = { ...updatedFields, title };
+  }
+  if (background) {
+    updatedFields = { ...updatedFields, background };
+  }
   return Boardv2.findOneAndUpdate(
       { _id: id },
-      { title },
+      { ...updatedFields },
       { new: true });
 };
 

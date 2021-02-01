@@ -13,6 +13,10 @@ const boardSchema = new mongoose.Schema({
     type: String,
     default: '',
     get: v => (v ? v : null)
+  },
+  background: {
+    type: String,
+    default: '#CCCCFF'
   }
 });
 

@@ -32,11 +32,11 @@ const removeById = async id => {
   return board;
 };
 
-const updateBoardById = async (id, title) => {
-  const { error } = updateBoard.validate({ title });
+const updateBoardById = async (id, title, background) => {
+  const { error } = updateBoard.validate({ title, background });
   if (error) throw boom.badRequest(error.message, { request: 'updateBoard' });
 
-  return boardsv2Repo.update(id, title);
+  return boardsv2Repo.update(id, title, background);
 };
 
 module.exports = {

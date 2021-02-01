@@ -47,8 +47,8 @@ router.route('/:id').put(
     authHandler,
     handler(async (req, res, next) => {
         const { id } = req.params;
-        const { title } = req.body;
-        const board = await boardsService.updateBoardById(id, title);
+        const { title, background } = req.body;
+        const board = await boardsService.updateBoardById(id, title, background);
         res.json(board);
         next(
             createSuccessObj({
